@@ -37,7 +37,6 @@
         xhr.onreadystatechange = function () {
           if (xhr.readyState == 4) {
             try {
-              console.log(xhr.status);
               if (xhr.status == 200) {
                 //XXX: parse some JSON from the request!
                 const responseData = JSON.parse(xhr.responseText);
@@ -157,6 +156,7 @@
       function addEntity(entity, data) {
         world[entity] = data;
         // (but should we?)
+        // We probably shouldn't. It turns out that if we use this line the
         //drawNextFrame();
         //XXX: Send a XHTML Request that updates the entity you just  modified!
         sendJSONXMLHTTPRequest("/entity/" + entity, data, (response) => {});
@@ -289,7 +289,7 @@
       }
 
       // 30 frames per second
-      setInterval(update, 1000 / 30.0);
+      setInterval(update, 1000 / 20.0);
     </script>
   </body>
 </html>
