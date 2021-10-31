@@ -36,6 +36,7 @@
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           if (xhr.readyState == 4) {
+            console.log(xhr.status);
             try {
               if (xhr.status == 200) {
                 //XXX: parse some JSON from the request!
@@ -150,7 +151,7 @@
         drawNextFrame();
         //XXX: Send a XHTML Request that updates the entity you just  modified!
         // console.log(entity)
-        console.log(host + "/entity/" + entity);
+        // console.log(host + "/entity/" + entity);
         sendJSONXMLHTTPRequest(host + "/entity/" + entity, data, (response) => {
           console.log(response);
         });
