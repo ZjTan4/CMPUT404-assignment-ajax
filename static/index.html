@@ -152,7 +152,7 @@
         //XXX: Send a XHTML Request that updates the entity you just  modified!
         // console.log(entity)
         // console.log(host + "/entity/" + entity);
-        sendJSONXMLHTTPRequest(host + "/entity/" + entity, data, (response) => {
+        sendJSONXMLHTTPRequest("/entity/" + entity, data, (response) => {
           console.log(response);
         });
       }
