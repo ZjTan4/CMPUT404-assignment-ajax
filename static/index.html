@@ -8,14 +8,14 @@
       name="viewport"
     />
     <meta name="viewport" content="width=device-width" />
-    <meta name="license" content=" Copyright 2013 Abram Hindle Licensed under
-    the Apache License, Version 2.0 (the "License"); you may not use this file
-    except in compliance with the License. You may obtain a copy of the License
-    at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable
-    law or agreed to in writing, software distributed under the License is
-    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied. See the License for the specific language
-    governing permissions and limitations under the License. "/>
+    <meta name="license" content=" Copyright 2013 Abram Hindle, 2021 Zijie Tan
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
+    by applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+    OF ANY KIND, either express or implied. See the License for the specific
+    language governing permissions and limitations under the License. "/>
     <script src="json2.js"></script>
   </head>
   <body bgcolor="black" height="100%" width="100%">
@@ -32,7 +32,7 @@
       var W = (canvas.width = window.innerWidth - 6);
       var H = (canvas.height = window.innerHeight - 50);
 
-      function sendJSONXMLHTTPRequest(url, objects, callback) {
+      function sendJSONXMLHTTPRequest(url, objects, callback, method) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           if (xhr.readyState == 4) {
@@ -48,21 +48,16 @@
             }
           }
         };
-        if (objects) {
-          //XXX: POST to a URL
-          xhr.open("POST", url);
-          // Remember to use application/json !
-          //XXX: set the mimetype and the accept headers!
-          xhr.setRequestHeader("Content-Type", "application/json");
-          xhr.setRequestHeader("Accept", "application/json");
+
+        //XXX: POST to a URL
+        xhr.open(method, url);
+        // Remember to use application/json !
+        //XXX: set the mimetype and the accept headers!
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Accept", "application/json");
+        if (method === "POST") {
           xhr.send(JSON.stringify(objects));
         } else {
-          //XXX: GET to a URL
-          xhr.open("GET", url);
-          // Remember to use application/json !
-          //XXX: set the mimetype and the accept headers!
-          xhr.setRequestHeader("Content-Type", "application/json");
-          xhr.setRequestHeader("Accept", "application/json");
           xhr.send();
         }
       }
@@ -159,7 +154,12 @@
         // We probably shouldn't. It turns out that if we use this line the
         //drawNextFrame();
         //XXX: Send a XHTML Request that updates the entity you just  modified!
-        sendJSONXMLHTTPRequest("/entity/" + entity, data, (response) => {});
+        sendJSONXMLHTTPRequest(
+          "/entity/" + entity,
+          data,
+          (response) => {},
+          "POST"
+        );
       }
 
       var counter = 0;
@@ -281,10 +281,15 @@
 
       function update() {
         //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
-        sendJSONXMLHTTPRequest("/world", null, (responseData) => {
-          world = responseData;
-          drawNextFrame();
-        });
+        sendJSONXMLHTTPRequest(
+          "/world",
+          null,
+          (responseData) => {
+            world = responseData;
+            drawNextFrame();
+          },
+          "GET"
+        );
         drawFrame();
       }
 
