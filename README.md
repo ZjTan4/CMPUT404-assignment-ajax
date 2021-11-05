@@ -13,3 +13,4 @@ Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
 # References
 
 1. https://stackoverflow.com/questions/7907596/json-dumps-vs-flask-jsonify
+2. https://codepen.io/jackrugile/pen/DGenc

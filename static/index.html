@@ -63,6 +63,8 @@
       }
 
       world = {};
+      globalColor = 0;
+      globalRadius = 10;
 
       //XXX: TODO Make this prettier!
       function drawCircle(context, entity) {
@@ -73,7 +75,8 @@
           var y = entity["y"];
           //moveTo(x,y);
           fillStyle = entity["colour"];
-          strokeStyle = fillStyle;
+          //strokeStyle = fillStyle;
+          strokeStyle = "hsla(" + globalColor * 1.5 + ",100%,50%,1)";
           arc(
             x,
             y,
@@ -83,6 +86,7 @@
             false
           );
           stroke();
+          //fill();
         }
       }
 
@@ -151,7 +155,7 @@
       function addEntity(entity, data) {
         world[entity] = data;
         // (but should we?)
-        // We probably shouldn't. It turns out that if we use this line the
+        // We probably shouldn't. It's better that we only draw the picture returned by the server (observable)
         //drawNextFrame();
         //XXX: Send a XHTML Request that updates the entity you just  modified!
         sendJSONXMLHTTPRequest(
@@ -276,7 +280,12 @@
       });
 
       mouse.mousedraggers.push(function (x, y, clicked, e) {
-        addEntityWithoutName({ x: x, y: y, colour: "green", radius: 10 });
+        addEntityWithoutName({
+          x: x,
+          y: y,
+          colour: "green",
+          radius: globalRadius,
+        });
       });
 
       function update() {
@@ -290,11 +299,13 @@
           },
           "GET"
         );
+        globalColor += 1;
+        //globalRadius = ((globalRadius + 1) % 11) + 5;
         drawFrame();
       }
 
       // 30 frames per second
-      setInterval(update, 1000 / 20.0);
+      setInterval(update, 1000 / 30.0);
     </script>
   </body>
 </html>
